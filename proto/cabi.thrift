@@ -27,7 +27,7 @@ struct CurrencyExchange {
     /* Сумма обмена */
     1: required base.Rational amount_exchanged
     /* Сумма обмена (с комиссией) */
-    2: required base.Rational crypto_amount_exchanged_with_fee
+    2: optional base.Rational crypto_amount_exchanged_with_fee
     /* Курс обмена */
     4: required base.Rational rate
     /* Отдаваеамая валюта (3 символа ISO 4217) */
