@@ -3,6 +3,9 @@ namespace erlang cabi
 
 include "base.thrift"
 
+/** ISO 4217 */
+typedef string CurrencySymbolicCode
+
 exception CurrencyRequestFail {
     1: optional string message
 }
@@ -14,20 +17,25 @@ enum ExchangeAction {
     sell
 }
 
+struct Currency {
+    1: required CurrencySymbolicCode symbolic_code
+    2: required i16 exponent
+}
+
 struct CheckCurrencyExchangeParams {
     /* Отдаваеамая валюта (3 символа ISO 4217, раздел “Валюты”) */
-    1: required string exchange_from
+    1: required Currency exchange_from
     /* Получаемая валюта (3 символа ISO 4217, раздел “Валюты”) */
-    2: required string exchange_to
+    2: required Currency exchange_to
     3: required ExchangeAction action
-    4: required i64 amount
+    4: required base.Rational amount
 }
 
 struct CurrencyExchange {
     /* Сумма обмена */
     1: required base.Rational amount_exchanged
     /* Сумма обмена (с комиссией) */
-    2: optional base.Rational crypto_amount_exchanged_with_fee
+    2: optional base.Rational amount_exchanged_with_fee
     /* Курс обмена */
     4: required base.Rational rate
     /* Отдаваеамая валюта (3 символа ISO 4217) */
@@ -35,8 +43,8 @@ struct CurrencyExchange {
     /* Получаемая валюта (3 символа ISO 4217) */
     6: required string exchange_to
     7: required ExchangeAction action
-    /* Сумма транзакции (точность - до двух знаков после запятой) */
-    8: required i64 amount
+    /* Сумма транзакции */
+    8: required base.Rational amount
 }
 
 service CryptoApi {
